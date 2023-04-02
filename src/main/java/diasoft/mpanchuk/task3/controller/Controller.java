@@ -2,6 +2,8 @@ package diasoft.mpanchuk.task3.controller;
 
 import diasoft.mpanchuk.task3.entity.Customer;
 import diasoft.mpanchuk.task3.service.CustomerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +13,15 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/customers")
 public class Controller {
+    private static final Logger logger = LoggerFactory.getLogger(Controller.class);
+
+
+    private final CustomerService customerService;
 
     @Autowired
-    CustomerService customerService;
+    public Controller(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     @GetMapping
     public List<Customer> getAll() {
@@ -38,6 +46,7 @@ public class Controller {
 
     @PostMapping
     public Customer create(@RequestBody Customer customer) {
+        logger.info("Got customer" + customer.toString());
         return  customerService.createCustomer(customer);
     }
 }
